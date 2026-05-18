@@ -4,7 +4,7 @@
 environment        = "dev"
 location           = "eastus"
 project_name       = "sentinel"
-owner              = "fred-mann"
+owner              = "ApepC"
 allowed_admin_cidr = "YOUR_IP/32"   # Replace with your IP: curl ifconfig.me
 deploy_vm          = false
 admin_username     = "azureadmin"
