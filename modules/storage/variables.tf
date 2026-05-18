@@ -1,0 +1,9 @@
+variable "prefix"              { type = string }
+variable "suffix"              { type = string }
+variable "location"            { type = string }
+variable "resource_group_name" { type = string }
+variable "tags"                { type = map(string) }
+variable "environment"         { type = string }
+variable "frontend_subnet_id"  { type = string }
+variable "data_subnet_id"      { type = string }
+variable "log_workspace_id"    { type = string }

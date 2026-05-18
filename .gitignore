@@ -1,0 +1,39 @@
+# Terraform state — NEVER commit these
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable files — NEVER commit
+terraform.tfvars
+*.auto.tfvars
+override.tf
+override.tf.json
+
+# Plan files (contain sensitive data)
+tfplan
+*.tfplan
+
+# Crash logs
+crash.log
+crash.*.log
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Secrets
+*.pem
+*.key
+azure-credentials.json
+.env
