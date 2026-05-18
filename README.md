@@ -269,7 +269,7 @@ az ad sp create-for-rbac \
 
 ## 🔄 Bicep vs Terraform
 
-| | [Bicep Edition](https://github.com/YOUR_USERNAME/azure-sentinel) | Terraform Edition |
+| | [Bicep Edition](https://github.com/ApepC/azure-sentinel) | Terraform Edition |
 |---|---|---|
 | **Language** | Bicep (Azure-native DSL) | HCL (cloud-agnostic) |
 | **State** | Managed by Azure | Remote in Blob Storage |
@@ -291,7 +291,7 @@ MIT — use freely, attribution appreciated.
 
 <div align="center">
 
-Built by **Fred Mann** | AZ-104 Certified · Terraform Associate (renewing)  
-[LinkedIn](https://linkedin.com/in/fredmann) · [Bicep Edition](https://github.com/YOUR_USERNAME/azure-sentinel)
+Built by **C Solo** | AZ-104 Certified · Terraform Associate (renewing)  
+ [Bicep Edition](https://github.com/ApepC/azure-sentinel)
 
 </div>
