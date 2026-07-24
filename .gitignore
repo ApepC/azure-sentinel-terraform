@@ -1,39 +1,47 @@
-# Terraform state — NEVER commit these
+# --- TERRAFORM CORE (CRITICAL) ---
+# State files — NEVER commit these (contain secrets & infrastructure map)
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
+
+# Local execution directory (plugins/modules)
 .terraform/
-.terraform.lock.hcl
+**/.terraform/*
 
 # Sensitive variable files — NEVER commit
-terraform.tfvars
+*.tfvars
 *.auto.tfvars
+!terraform.tfvars.example  # Allow sanitized example files
 override.tf
 override.tf.json
+*_override.tf
+*_override.tf.json
 
-# Plan files (contain sensitive data)
-tfplan
+# Plan files (contain sensitive data from state)
 *.tfplan
+*.tfplan.*
 
 # Crash logs
 crash.log
 crash.*.log
 
-# CLI config
+# CLI config (may contain tokens)
 .terraformrc
 terraform.rc
 
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-*.swp
-
-# Secrets
+# --- SECURITY & SECRETS ---
 *.pem
 *.key
 azure-credentials.json
 .env
+.env.local
+secrets.json
+service-principal.json
+
+# --- OS & IDE ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo   
