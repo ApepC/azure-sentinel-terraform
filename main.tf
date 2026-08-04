@@ -1,6 +1,6 @@
 # ============================================================
 # Azure Sentinel Infrastructure — Terraform Root Module
-# AZ-104 / Terraform Associate Portfolio Project | Fred Mann
+# AZ-104 / Terraform Associate Portfolio Project | CS
 # ============================================================
 
 terraform {
