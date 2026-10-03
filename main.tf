@@ -34,9 +34,11 @@ provider "azurerm" {
     }
     virtual_machine {
       delete_os_disk_on_deletion = true
-      graceful_shutdown          = false
+      graceful_shutdown          = true
     }
     resource_group {
+      # Set to false so `terraform destroy` cleanly tears down the demo.
+      # Production should use true to prevent accidental data loss.
       prevent_deletion_if_contains_resources = false
     }
   }
@@ -142,4 +144,11 @@ module "vm" {
   vm_size             = var.vm_size
   log_workspace_id    = module.monitoring.workspace_id
   log_workspace_key   = module.monitoring.workspace_primary_key
+
+  lifecycle {
+    precondition {
+      condition     = !var.deploy_vm || length(var.admin_password) >= 12
+      error_message = "admin_password must be at least 12 characters when deploy_vm = true."
+    }
+  }
 }
