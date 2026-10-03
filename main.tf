@@ -18,21 +18,22 @@ terraform {
   }
 
   # ── Remote State Backend ───────────────────────────────────
-  # To enable remote state:
-  #   1. Run ./scripts/bootstrap-state.sh
-  #   2. Copy the backend block it prints below (uncomment it)
-  #   3. Run: terraform init -reconfigure
+  # Values are supplied at init time via -backend-config.
+  # This lets CI and local dev point at the same state without
+  # committing resource names or storage account identifiers.
   #
-  # Leaving this commented keeps state local (terraform.tfstate in the
-  # project root). Fine for a solo demo, NOT for team use.
+  # Locally (after running ./scripts/bootstrap-state.sh):
+  #   terraform init \
+  #     -backend-config="resource_group_name=rg-tfstate" \
+  #     -backend-config="storage_account_name=stsentinelXXXXXX" \
+  #     -backend-config="container_name=tfstate" \
+  #     -backend-config="key=sentinel.tfstate" \
+  #     -backend-config="use_azuread_auth=true"
   #
-  # backend "azurerm" {
-  #   resource_group_name  = "rg-tfstate"
-  #   storage_account_name = "stsentinelXXXXXX"   # from bootstrap script
-  #   container_name       = "tfstate"
-  #   key                  = "sentinel.tfstate"
-  #   use_azuread_auth     = true
-  # }
+  # In CI: the workflow supplies the same values from GitHub secrets.
+  # To use local state instead (not recommended beyond a quick demo),
+  # comment out this block and run: terraform init -migrate-state
+  backend "azurerm" {}
 }
 
 provider "azurerm" {
@@ -86,6 +87,7 @@ module "monitoring" {
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   tags                = local.common_tags
+  environment         = var.environment
   retention_days      = var.environment == "prod" ? 90 : 30
 }
 
@@ -131,7 +133,6 @@ module "keyvault" {
   location              = azurerm_resource_group.main.location
   resource_group_name   = azurerm_resource_group.main.name
   tags                  = local.common_tags
-  environment           = var.environment
   backend_subnet_id     = module.vnet.subnet_ids["snet-backend"]
   log_workspace_id      = module.monitoring.workspace_id
   soft_delete_retention = var.environment == "prod" ? 90 : 7
