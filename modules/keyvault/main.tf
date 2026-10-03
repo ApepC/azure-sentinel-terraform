@@ -22,6 +22,15 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
+# ── RBAC: Grant the deploying principal admin access ─────────
+# Without this, enable_rbac_authorization = true leaves the vault
+# inaccessible to everyone, including the deployer.
+resource "azurerm_role_assignment" "deployer_admin" {
+  scope                = azurerm_key_vault.main.id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
 # ── Diagnostic Settings ───────────────────────────────────────
 resource "azurerm_monitor_diagnostic_setting" "keyvault" {
   name                       = "diag-kv-${var.prefix}"
@@ -29,10 +38,8 @@ resource "azurerm_monitor_diagnostic_setting" "keyvault" {
   log_analytics_workspace_id = var.log_workspace_id
 
   enabled_log { category = "AuditEvent" }
-  enabled_log { category = "AzurePolicyEvaluationDetails" }
 
   metric {
     category = "AllMetrics"
-    enabled  = true
   }
 }
