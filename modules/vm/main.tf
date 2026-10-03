@@ -1,7 +1,8 @@
 # ── Module: Linux Virtual Machine ───────────────────────────
 # Ubuntu 22.04 LTS, Trusted Launch, OMS agent,
-# system-managed identity, no public IP, auto-shutdown
+# system-assigned identity, no public IP, auto-shutdown
 
+# ── Network Interface ────────────────────────────────────────
 resource "azurerm_network_interface" "main" {
   name                = "nic-vm-${var.prefix}"
   location            = var.location
@@ -16,6 +17,7 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
+# ── Linux Virtual Machine ────────────────────────────────────
 resource "azurerm_linux_virtual_machine" "main" {
   name                = "vm-${var.prefix}"
   location            = var.location
@@ -29,7 +31,8 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   network_interface_ids = [azurerm_network_interface.main.id]
 
-  # System-assigned managed identity for Key Vault access
+  # System-assigned managed identity — grants a principal_id for
+  # downstream role assignments (e.g. Key Vault Secrets User).
   identity {
     type = "SystemAssigned"
   }
@@ -37,7 +40,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   os_disk {
     name                 = "osdisk-vm-${var.prefix}"
     caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"
+    storage_account_type = "StandardSSD_LRS"
     disk_size_gb         = 64
   }
 
@@ -56,11 +59,26 @@ resource "azurerm_linux_virtual_machine" "main" {
     # Empty block = use managed storage account
   }
 
-  patch_mode            = "AutomaticByPlatform"
-  provision_vm_agent    = true
+  patch_mode         = "AutomaticByPlatform"
+  provision_vm_agent = true
+}
+
+# ── Linux Patch Extension (required by patch_mode = AutomaticByPlatform) ──
+resource "azurerm_virtual_machine_extension" "patch" {
+  name                       = "LinuxPatchExtension"
+  virtual_machine_id         = azurerm_linux_virtual_machine.main.id
+  publisher                  = "Microsoft.CPlat.Core"
+  type                       = "LinuxPatchExtension"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+
+  settings = jsonencode({
+    patchMode = "AutomaticByPlatform"
+  })
 }
 
 # ── OMS Agent → Log Analytics ────────────────────────────────
+# NOTE: MMA is deprecated — see README Roadmap for AMA + DCR migration.
 resource "azurerm_virtual_machine_extension" "oms" {
   name                       = "OmsAgentForLinux"
   virtual_machine_id         = azurerm_linux_virtual_machine.main.id
