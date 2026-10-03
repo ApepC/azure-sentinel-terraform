@@ -50,6 +50,11 @@ output "log_analytics_workspace_id" {
   value       = module.monitoring.workspace_id
 }
 
+output "sentinel_onboarding_id" {
+  description = "Resource ID of the Microsoft Sentinel onboarding"
+  value       = azurerm_sentinel_log_analytics_workspace_onboarding.main.id
+}
+
 output "vm_id" {
   description = "Resource ID of the demo VM (if deployed)"
   value       = var.deploy_vm ? module.vm[0].vm_id : null
