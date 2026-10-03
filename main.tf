@@ -78,6 +78,11 @@ module "monitoring" {
   retention_days      = var.environment == "prod" ? 90 : 30
 }
 
+# ── Sentinel Onboarding ──────────────────────────────────────
+resource "azurerm_sentinel_log_analytics_workspace_onboarding" "main" {
+  workspace_id = module.monitoring.workspace_id
+}
+
 # ── Virtual Network ──────────────────────────────────────────
 module "vnet" {
   source = "./modules/vnet"
