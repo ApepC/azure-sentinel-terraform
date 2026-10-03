@@ -1,47 +1,156 @@
-# --- TERRAFORM CORE (CRITICAL) ---
-# State files — NEVER commit these (contain secrets & infrastructure map)
+# --- SECRETS & CREDENTIALS (CRITICAL) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+keys/
+credentials.json
+service-account.json
+service-principal.json
+azure-credentials.json
+openai_key.txt
+anthropic_key.txt
+
+# Microsoft Sentinel / Azure CLI auth caches
+.azure/
+azureProfile.json
+accessTokens.json
+msal_token_cache.*
+
+# --- AZURE SENTINEL SPECIFIC ---
+# Workbench / solution packaging output
+*.nupkg
+!*Microsoft.Azure.Sentinel.KustoServices.*.nupkg
+package.zip
+build/
+dist/
+
+# Local solution deployment / test output
+Solutions/*/Package/
+Solutions/*/TestResults/
+deployment-output/
+deploy-logs/
+
+# Parameter files that may contain workspace IDs, subscription IDs, or secrets
+*.parameters.json
+*.parameters.*.json
+!*.parameters.example.json
+
+# Local override files for repository connections
+override.yaml
+override.yml
+
+# --- SENTINEL DATA & CONTENT ---
+# Exported incidents, alerts, and raw logs (may contain PII / tenant data)
+*.incident.json
+*.alert.json
+*.raw.log
+*.csv
+!samples/*.csv
+!tests/fixtures/*.csv
+!eval/*.csv
+
+# Hunting query / analytics rule exports that are environment-specific
+exports/
+hunting-export/
+rules-export/
+
+# Workbook JSON exports (contain workspace-specific IDs)
+workbooks/exported/
+*.workbook.json
+!workbooks/templates/*.workbook.json
+
+# --- PYTHON (for Sentinel notebooks & automation) ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- JUPYTER NOTEBOOKS ---
+.ipynb_checkpoints/
+# Use nbstripout to strip outputs instead of ignoring notebooks entirely
+# If you must ignore outputs only:
+*.ipynb
+!notebooks/*.ipynb
+!analysis_sample.ipynb
+
+# --- TERRAFORM (if using IaC for Sentinel deployment) ---
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
-
-# Local execution directory (plugins/modules)
 .terraform/
-**/.terraform/*
-
-# Sensitive variable files — NEVER commit
+.terraform.d/
 *.tfvars
 *.auto.tfvars
-!terraform.tfvars.example  # Allow sanitized example files
+!terraform.tfvars.example
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
-# Plan files (contain sensitive data from state)
 *.tfplan
 *.tfplan.*
-
-# Crash logs
+.terraformrc
+terraform.rc
 crash.log
 crash.*.log
 
-# CLI config (may contain tokens)
-.terraformrc
-terraform.rc
+# --- ARM TEMPLATES ---
+# Only ignore generated/deployed ARM templates, not source templates
+generated/
+azuredeploy.parameters.json
+!azuredeploy.parameters.example.json
 
-# --- SECURITY & SECRETS ---
-*.pem
-*.key
-azure-credentials.json
-.env
-.env.local
-secrets.json
-service-principal.json
+# --- LOGS ---
+*.log
+logs/
+crash.log
 
-# --- OS & IDE ---
-.DS_Store
-Thumbs.db
+# --- IDE ---
 .vscode/
 .idea/
 *.swp
-*.swo   
+*.swo
+*~
+*.iml
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Thumbs.db:encryptable
+desktop.ini
+__MACOSX/
+
+# --- BACKUP & TEMP ---
+*.bak
+*.backup
+*.tmp
+temp/
+tmp/
+
+# --- NODE (if using npm for tooling) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --- EXPERIMENT TRACKING (if using notebooks for ML/AI in Sentinel) ---
+wandb/
+mlruns/
+lightning_logs/
+runs/
+outputs/   
