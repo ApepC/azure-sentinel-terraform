@@ -17,12 +17,21 @@ terraform {
     }
   }
 
-  # Remote state backend — uncomment after running scripts/bootstrap-state.sh
+  # ── Remote State Backend ───────────────────────────────────
+  # To enable remote state:
+  #   1. Run ./scripts/bootstrap-state.sh
+  #   2. Copy the backend block it prints below (uncomment it)
+  #   3. Run: terraform init -reconfigure
+  #
+  # Leaving this commented keeps state local (terraform.tfstate in the
+  # project root). Fine for a solo demo, NOT for team use.
+  #
   # backend "azurerm" {
   #   resource_group_name  = "rg-tfstate"
-  #   storage_account_name = "stterraformstate"
+  #   storage_account_name = "stsentinelXXXXXX"   # from bootstrap script
   #   container_name       = "tfstate"
   #   key                  = "sentinel.tfstate"
+  #   use_azuread_auth     = true
   # }
 }
 
