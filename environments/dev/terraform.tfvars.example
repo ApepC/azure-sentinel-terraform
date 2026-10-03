@@ -1,13 +1,17 @@
 # ── Dev Environment Variables ─────────────────────────────────
-# Copy this to terraform.tfvars (never commit terraform.tfvars)
+# Copy this file to terraform.tfvars before running terraform apply:
+#   cp environments/dev/terraform.tfvars.example terraform.tfvars
+#
+# Never commit terraform.tfvars — it's in .gitignore.
 
-environment        = "dev"
-location           = "eastus"
-project_name       = "sentinel"
-owner              = "ApepC"
-allowed_admin_cidr = "YOUR_IP/32"   # Replace with your IP: curl ifconfig.me
-deploy_vm          = false
-admin_username     = "azureadmin"
+environment  = "dev"
+location     = "eastus"
+project_name = "sentinel"
+owner        = "ApepC"
+
+# Replace with your public IP in CIDR notation:
+#   curl ifconfig.me
+allowed_admin_cidr = "YOUR_IP/32"
 
 vnet_address_space = "10.0.0.0/16"
 
@@ -19,6 +23,16 @@ subnets = {
   "AzureBastionSubnet" = "10.0.5.0/26"
 }
 
+# ── Optional VM ───────────────────────────────────────────────
+# Set to true to deploy the demo Linux VM (~$30-40/month, auto-shutdown at 23:00 UTC)
+deploy_vm      = false
+admin_username = "azureadmin"
+
+# Required only if deploy_vm = true (min 12 characters)
+# admin_password = "REPLACE_ME_12_CHARS_MIN"
+
+# ── Additional tags ───────────────────────────────────────────
+# These merge with the common tags applied by the root module.
 tags = {
-  cost_center = "personal-lab"
+  purpose = "portfolio"
 }
