@@ -1,3 +1,7 @@
+# ============================================================
+# Azure Sentinel Infrastructure — .gitignore
+# ============================================================
+
 # --- SECRETS & CREDENTIALS (CRITICAL) ---
 .env
 .env.*
@@ -7,6 +11,9 @@
 *.p12
 *.pfx
 *.crt
+*.jks
+*.keystore
+.netrc
 secrets/
 keys/
 credentials.json
@@ -16,63 +23,55 @@ azure-credentials.json
 openai_key.txt
 anthropic_key.txt
 
-# Microsoft Sentinel / Azure CLI auth caches
+# Azure CLI / MSAL auth caches
 .azure/
 azureProfile.json
 accessTokens.json
 msal_token_cache.*
 
-# --- AZURE SENTINEL SPECIFIC ---
-# Workbench / solution packaging output
+# --- AZURE SENTINEL ---
+# Solution packaging output
 *.nupkg
-!*Microsoft.Azure.Sentinel.KustoServices.*.nupkg
+!Microsoft.Azure.Sentinel.KustoServices.*.nupkg
 package.zip
-build/
-dist/
 
-# Local solution deployment / test output
-Solutions/*/Package/
-Solutions/*/TestResults/
+# Local deployment / test output
 deployment-output/
 deploy-logs/
 
-# Parameter files that may contain workspace IDs, subscription IDs, or secrets
+# Parameter files (may contain workspace/subscription IDs)
 *.parameters.json
 *.parameters.*.json
 !*.parameters.example.json
 
-# Local override files for repository connections
-override.yaml
-override.yml
-
-# --- SENTINEL DATA & CONTENT ---
-# Exported incidents, alerts, and raw logs (may contain PII / tenant data)
+# Exported incidents, alerts, raw logs (may contain PII)
 *.incident.json
 *.alert.json
 *.raw.log
+
+# CSV data — keep committed samples via negation
 *.csv
 !samples/*.csv
 !tests/fixtures/*.csv
 !eval/*.csv
 
-# Hunting query / analytics rule exports that are environment-specific
+# Hunting / analytics rule exports (environment-specific)
 exports/
 hunting-export/
 rules-export/
 
-# Workbook JSON exports (contain workspace-specific IDs)
+# Workbook exports (contain workspace-specific IDs)
 workbooks/exported/
 *.workbook.json
 !workbooks/templates/*.workbook.json
 
-# --- PYTHON (for Sentinel notebooks & automation) ---
+# --- PYTHON ---
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .venv/
 venv/
-env/
 *.egg-info/
 .eggs/
 .pytest_cache/
@@ -80,45 +79,63 @@ env/
 .ruff_cache/
 .coverage
 htmlcov/
+build/
+dist/
 
-# --- JUPYTER NOTEBOOKS ---
+# --- JUPYTER ---
+# Preferred: run `nbstripout --install` to strip outputs on commit.
+# Fallback patterns below if you can't:
 .ipynb_checkpoints/
-# Use nbstripout to strip outputs instead of ignoring notebooks entirely
-# If you must ignore outputs only:
 *.ipynb
 !notebooks/*.ipynb
 !analysis_sample.ipynb
 
-# --- TERRAFORM (if using IaC for Sentinel deployment) ---
+# --- TERRAFORM ---
+# State (CRITICAL — contains secrets + full infra map)
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
+
+# Local execution dir
 .terraform/
 .terraform.d/
+
+# Variables (CRITICAL — .tfvars.json is the commonly-forgotten one)
 *.tfvars
+*.tfvars.json
 *.auto.tfvars
+*.auto.tfvars.json
 !terraform.tfvars.example
+!*.tfvars.example.json
+
+# Overrides
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# Plan files (embed state values)
 *.tfplan
 *.tfplan.*
+
+# Backend config (env-specific storage account names)
+*.tfbackend
+
+# CLI config (may contain tokens)
 .terraformrc
 terraform.rc
+
+# Crash logs
 crash.log
 crash.*.log
 
 # --- ARM TEMPLATES ---
-# Only ignore generated/deployed ARM templates, not source templates
-generated/
-azuredeploy.parameters.json
-!azuredeploy.parameters.example.json
+# Only generated output — source templates are committed
+arm/generated/
 
 # --- LOGS ---
 *.log
 logs/
-crash.log
 
 # --- IDE ---
 .vscode/
@@ -142,15 +159,19 @@ __MACOSX/
 temp/
 tmp/
 
-# --- NODE (if using npm for tooling) ---
+# --- NODE ---
 node_modules/
 npm-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# --- EXPERIMENT TRACKING (if using notebooks for ML/AI in Sentinel) ---
+# --- EXPERIMENT TRACKING ---
 wandb/
 mlruns/
 lightning_logs/
 runs/
-outputs/   
+outputs/
+
+# --- DIRENV ---
+.envrc
+.direnv/
