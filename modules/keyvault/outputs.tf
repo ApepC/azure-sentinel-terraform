@@ -1,3 +1,16 @@
-output "key_vault_id"  { value = azurerm_key_vault.main.id }
-output "key_vault_uri" { value = azurerm_key_vault.main.vault_uri }
-output "key_vault_name" { value = azurerm_key_vault.main.name }
+# ── Module: Key Vault — Outputs ──────────────────────────────
+
+output "key_vault_id" {
+  description = "Resource ID of the Key Vault"
+  value       = azurerm_key_vault.main.id
+}
+
+output "key_vault_uri" {
+  description = "URI of the Key Vault for SDK/CLI access"
+  value       = azurerm_key_vault.main.vault_uri
+}
+
+output "key_vault_name" {
+  description = "Name of the Key Vault"
+  value       = azurerm_key_vault.main.name
+}
