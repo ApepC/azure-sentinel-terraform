@@ -7,7 +7,7 @@
 environment  = "dev"
 location     = "eastus"
 project_name = "sentinel"
-owner        = "ApepC"
+owner        = "C Solo"
 
 # Replace with your public IP in CIDR notation:
 #   curl ifconfig.me
