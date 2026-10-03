@@ -64,3 +64,8 @@ output "vm_principal_id" {
   description = "Managed Identity principal ID of the VM (if deployed)"
   value       = var.deploy_vm ? module.vm[0].principal_id : null
 }
+
+output "vm_nic_id" {
+  description = "Resource ID of the demo VM's network interface (if deployed)"
+  value       = var.deploy_vm ? module.vm[0].nic_id : null
+}
