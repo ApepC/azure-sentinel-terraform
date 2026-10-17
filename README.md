@@ -9,7 +9,7 @@
 ![Terraform Associate](https://img.shields.io/badge/Terraform-Associate-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
 
 **Production-grade Azure infrastructure using Terraform modules, remote state, and a full CI/CD pipeline.**  
-The Terraform counterpart to the [Bicep edition](https://github.com/YOUR_USERNAME/azure-sentinel) — identical infrastructure, different IaC philosophy.
+The Terraform counterpart to the [Bicep edition](https://github.com/ApepC/azure-sentinel) — identical infrastructure, different IaC philosophy.
 
 [Deploy Now](#-quick-start) · [Architecture](#-architecture) · [Module Docs](#-modules) · [CI/CD](#-cicd-pipeline)
 
