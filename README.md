@@ -291,7 +291,7 @@ MIT — use freely, attribution appreciated.
 
 <div align="center">
 
-Built by **C Solo** | AZ-104 Certified · Terraform Associate (renewing)  
+Built by **C Solo** | AZ-104 Certified · Terraform Associate Dec 2023 – Dec 2025  
  [Bicep Edition](https://github.com/ApepC/azure-sentinel)
 
 </div>
